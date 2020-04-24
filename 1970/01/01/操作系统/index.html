@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="进程 提到进程，估计很多人会想到：进程是程序的运行实体，是资源（CPU时间片、内存等）分配的最小单元。这话没错，但还是很抽象。所以我从另外角度解释进程，再次之前有必要说明抽象、虚拟化、隔离三个概念。  抽象：用本质代替复杂事物而忽略细节，是计算机中最重要的概念之一，如用函数接口代替复杂的实现过程就是种抽象，只需按接口规范传参调用，而不用关注底层实现细节。另外与之相关的中间层定律：计算机科学领域的任">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统">
+<meta property="og:url" content="http://yoursite.com/1970/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="进程 提到进程，估计很多人会想到：进程是程序的运行实体，是资源（CPU时间片、内存等）分配的最小单元。这话没错，但还是很抽象。所以我从另外角度解释进程，再次之前有必要说明抽象、虚拟化、隔离三个概念。  抽象：用本质代替复杂事物而忽略细节，是计算机中最重要的概念之一，如用函数接口代替复杂的实现过程就是种抽象，只需按接口规范传参调用，而不用关注底层实现细节。另外与之相关的中间层定律：计算机科学领域的任">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/1970/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B.png">
+<meta property="og:image" content="http://yoursite.com/1970/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%B8%83%E6%80%81%E6%A8%A1%E5%9E%8B.png">
+<meta property="og:image" content="http://yoursite.com/1970/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/dispatch.jpg">
+<meta property="og:image" content="http://yoursite.com/1970/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/IPC.gif">
+<meta property="og:image" content="http://yoursite.com/1970/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%BA%BF%E7%A8%8B.png">
+<meta property="article:published_time" content="1970-01-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-04-23T16:18:53.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/1970/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/1970/01/01/操作系统/"/>
+
+
+
+
+
+  <title>操作系统 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/1970/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">操作系统</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="1970-01-01T08:00:00+08:00">
+                1970-01-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/1970/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/1970/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="进程">进程</h2>
+<p>提到进程，估计很多人会想到：<strong>进程是程序的运行实体，是资源（CPU时间片、内存等）分配的最小单元</strong>。这话没错，但还是很抽象。所以我从另外角度解释进程，再次之前有必要说明<strong>抽象</strong>、<strong>虚拟化</strong>、<strong>隔离</strong>三个概念。</p>
+<ul>
+<li>抽象：用<strong>本质</strong>代替复杂事物而忽略细节，是计算机中最重要的概念之一，如用函数接口代替复杂的实现过程就是种抽象，只需按接口规范传参调用，而不用关注底层实现细节。另外与之相关的<strong>中间层</strong>定律：计算机科学领域的任何问题都可以通过增加一个间接的中间层来解决。由抽象提炼中出间层，而中间层之间通过接口通信。</li>
+<li>虚拟化：一种非常重要的<strong>抽象</strong>,是&quot;<strong>逻辑</strong>&quot;概念，而非真实事物。如文件对IO设备的抽象、虚拟内存对存储器的抽象、进程对运行程序的抽象、网络链路对物理通信链路的抽象都是虚拟化的抽象。</li>
+<li>隔离：设计大型系统需保证各组件<strong>相互隔离</strong>，避免某个组件改变影响其他。在操作系统中需保证各进程相互隔离。提供隔离的软件对象就是<strong>进程</strong>。</li>
+</ul>
+<p>一旦保存在磁盘上的程序运行成为<strong>进程</strong>，系统就以进程为单位分配资源（CPU时间片、内存等），每个进程会被分配一块独立的内存体，如图:<br>
+<img src="/1970/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B.png" alt="进程"><br>
+所以说“<strong>进程是程序的运行实体，是资源分配的最小单元</strong>”。</p>
+<h3 id="三种进程">三种进程</h3>
+<ul>
+<li>孤儿进程：父进程退出，但仍运行的子进程被称为<strong>孤儿进程</strong>。其会被init进程回收，故不会对系统造成危害。</li>
+<li>僵尸进程：子进程退出但父进程未调用wait()或waitpid()，仍占用进程描述符的子进程叫<strong>僵尸进程</strong>，ps命令显示出来的状态为z(zombie)，只需杀死父进程使其变孤儿进程并被init回收。</li>
+<li>守护进程：在系统启动后常以root权限运行在后端的特殊进程叫<strong>守护进程</strong>，独立于终端并周期性执行或等待事件，其名称常以d结尾。</li>
+</ul>
+<h3 id="进程状态">进程状态</h3>
+<p>常见的有三态模型、五态模型，但实际系统的进程状态很复杂，需要在<strong>阻塞</strong>、<strong>就绪</strong>、<strong>运行</strong>三种状态之上加上<strong>创建</strong>、<strong>终止</strong>两种状态表示进程的创建和结束，也就是五态模型，在此之上系统为防止进程太多导致内存不足，还需将进程<strong>挂起</strong>，也即将进程从内存保存到交换区，这样才符合真实系统的进程模型，注意挂起分就绪挂起和阻塞挂起，也就组成七态模型，如图所示：<img src="/1970/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%B8%83%E6%80%81%E6%A8%A1%E5%9E%8B.png" alt="七态模型"><br>
+具体参考<a href="https://blog.csdn.net/qq_32623363/article/details/87891224" target="_blank" rel="noopener">1</a>或<a href="https://www.cnblogs.com/lrhya/p/10636011.html" target="_blank" rel="noopener">2</a></p>
+<h3 id="进程调度">进程调度</h3>
+<p>系统从就绪队列按某种策略，选择进程使进程从就绪态变为运行态，其中的策略就叫进程调度策略，不废话直接上图：<br>
+<img src="/1970/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/dispatch.jpg" alt="dispatch"><br>
+详细说明参考<a href="https://blog.csdn.net/qq_35642036/article/details/82809812" target="_blank" rel="noopener">1</a></p>
+<h3 id="进程通信">进程通信</h3>
+<p>Linux的IPC继承自Unix的IPC,并从一开始就支持Posix IPC，如图所示：<br>
+<img src="/1970/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/IPC.gif" alt="IPC"><br>
+具体来说，Unix IPC最初包括：管道（匿名、命名）、信号、System V IPC(消息队列、信号灯、共享内存)；Posix IPC仅包括后三者,但叫法都加上Posix，之后都支持目前应用最广泛的Socket。<br>
+管道：前者仅支持<strong>父子</strong>进程，后者也支持<strong>非父子</strong>进程间<strong>单向</strong>通信。<br>
+信号：用于通知接收进程某个事件发生,是较复杂通信方式。<br>
+消息队列：存放内核中并由消息队列标识符标识的消息的链表，既无信号承载信息量少，又无管道仅承载无格式字节流及缓冲区大小受限等缺点。<br>
+信号量：计数器，常作为控制多个进程对资源的访问的锁机制。<br>
+共享内存：被其他进程共享的内存段，常结合其他机制达到同步与互斥。<br>
+socket：常用的进程通信机制，多用于不同机器见进程通信，源自BSD。</p>
+<h3 id="死锁">死锁</h3>
+<p>死锁必要条件：</p>
+<ul>
+<li>互斥条件：一个资源仅被一个进程使用</li>
+<li>不可剥夺：进程在未使用完资源前，只能主动释放资源</li>
+<li>请求和保持：进程已保持至少一个资源不放，且又请求而不得（被其他进程占用）</li>
+<li>循环等待：{p0…pn}p0等p1…pn等p0的资源。<br>
+死锁处理策略：<br>
+鸵鸟、预防、避免（四条件不同时成立）、检测与解除</li>
+</ul>
+<h3 id="进程同步">进程同步</h3>
+<p>书上说法不统一，暂时先放着，有时间好好研究。</p>
+<h2 id="线程">线程</h2>
+<p>由于进程间切换、通信开销较大，限制并发粒度和效率，无法满足越来越复杂的程序要求，于是提出线程概念，线程是指进程内的一个执行单元，也是进程内的可调度实体。如图是线程模型：<img src="/1970/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%BA%BF%E7%A8%8B.png" alt="线程"></p>
+<h3 id="进程与线程区别">进程与线程区别</h3>
+<ul>
+<li>调度：线程是CPU调度的基本单位，进程是资源分配的基本单位。</li>
+<li>并发性：多进程可并发执行相互独立，同一进程的多线程也可并发执行但不独立。</li>
+<li>拥有资源：进程是拥有系统资源的独立单位，线程没有，但可访问进程内资源。</li>
+<li>系统开销：进程系统的开销大于线程开销。</li>
+</ul>
+<p>联系：<br>
+（1）一个线程只属于一个进程，而一个进程至少有一个线程。<br>
+（2）资源分配给进程，同一进程内所有线程共享该进程的所有资源。<br>
+（3）CPU分给线程，即真正在CPU上运行的是线程。<br>
+（4）多线程执行时，需协作同步。不同进程的线程间要利用消息通信的办法实现同步。</p>
+<h3 id="线程同步">线程同步</h3>
+<ul>
+<li>锁：互斥锁（拍他性）、条件变量（阻塞至特定条件为真）、读写锁（读共享写互斥）</li>
+<li>信号量（sem）：允许同一时刻多个线程（最大线程数）访问公共资源</li>
+<li>事件（信号）：通知的方式保持多线程同步<br>
+具体参考<a href="https://www.cnblogs.com/jiangyu0331/p/11662872.html" target="_blank" rel="noopener">1</a></li>
+</ul>
+<h3 id="分段与分页">分段与分页</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left">分段</th>
+<th style="text-align:left">分页</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">可见性</td>
+<td style="text-align:left">段是信息的逻辑单位，由用户需要划分,故对用户可见</td>
+<td style="text-align:left">页是信息的物理单位，为管理主存方便划分，对用户透明</td>
+</tr>
+<tr>
+<td style="text-align:left">大 小</td>
+<td style="text-align:left">不固定由功能决定</td>
+<td style="text-align:left">固定由系统决定</td>
+</tr>
+<tr>
+<td style="text-align:left">维 度</td>
+<td style="text-align:left">二维地址空间</td>
+<td style="text-align:left">一维地址空间</td>
+</tr>
+<tr>
+<td style="text-align:left">功 能</td>
+<td style="text-align:left">便于存储保护和信息的共享</td>
+<td style="text-align:left">页的保护和共享受限制</td>
+</tr>
+</tbody>
+</table>
+<p>参考<a href="https://blog.csdn.net/gui951753/article/details/79489748" target="_blank" rel="noopener">1</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/24/%E4%B8%80%E6%96%87%E6%80%BB%E7%BB%93markdown%E8%AF%AD%E6%B3%95/" rel="prev" title="一文总结markdown语法">
+                一文总结markdown语法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程"><span class="nav-number">1.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#三种进程"><span class="nav-number">1.1.</span> <span class="nav-text">三种进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程状态"><span class="nav-number">1.2.</span> <span class="nav-text">进程状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程调度"><span class="nav-number">1.3.</span> <span class="nav-text">进程调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程通信"><span class="nav-number">1.4.</span> <span class="nav-text">进程通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#死锁"><span class="nav-number">1.5.</span> <span class="nav-text">死锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程同步"><span class="nav-number">1.6.</span> <span class="nav-text">进程同步</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">2.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程与线程区别"><span class="nav-number">2.1.</span> <span class="nav-text">进程与线程区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程同步"><span class="nav-number">2.2.</span> <span class="nav-text">线程同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分段与分页"><span class="nav-number">2.3.</span> <span class="nav-text">分段与分页</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'vpaR5T7lbVvhkaAUlm4qSY2T-MdYXbMMI',
+        appKey: 'gyvxy2SGG8yRQuN2wq0FxAMC',
+        placeholder: '这里留言。。',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
