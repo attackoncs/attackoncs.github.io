@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="众所周知，操作系统知识非常重要，因为很多经典算法或思路，都能在操作系统中找到身影，故稍好点的公司，都很看中求职者的操作系统的基础，在多次面试中都遇到相关面试题，故用一篇文总结操作系统知识及面试高频考点。 进程 提到进程，估计很多人会想到：进程是程序的运行实体，是资源（CPU时间片、内存等）分配的最小单元。这话没错，但还是很抽象。所以我从另外角度解释进程，再次之前有必要说明抽象、虚拟化、隔离三个概念">
+<meta name="description" content="众所周知，操作系统知识非常重要，因为很多经典算法或思路，都能在操作系统中找到身影，故稍好点的公司，都很看中求职者的操作系统的基础，在多次面试中都遇到相关面试题，故用一篇文总结操作系统知识及面试高频考点。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一文总结操作系统知识及面试高频考点">
 <meta property="og:url" content="http://yoursite.com/2020/04/25/%E4%B8%80%E6%96%87%E6%80%BB%E7%BB%93%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E5%8F%8A%E9%9D%A2%E8%AF%95%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="众所周知，操作系统知识非常重要，因为很多经典算法或思路，都能在操作系统中找到身影，故稍好点的公司，都很看中求职者的操作系统的基础，在多次面试中都遇到相关面试题，故用一篇文总结操作系统知识及面试高频考点。 进程 提到进程，估计很多人会想到：进程是程序的运行实体，是资源（CPU时间片、内存等）分配的最小单元。这话没错，但还是很抽象。所以我从另外角度解释进程，再次之前有必要说明抽象、虚拟化、隔离三个概念">
+<meta property="og:description" content="众所周知，操作系统知识非常重要，因为很多经典算法或思路，都能在操作系统中找到身影，故稍好点的公司，都很看中求职者的操作系统的基础，在多次面试中都遇到相关面试题，故用一篇文总结操作系统知识及面试高频考点。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://yoursite.com/2020/04/25/%E4%B8%80%E6%96%87%E6%80%BB%E7%BB%93%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E5%8F%8A%E9%9D%A2%E8%AF%95%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/%E8%BF%9B%E7%A8%8B.png">
 <meta property="og:image" content="http://yoursite.com/2020/04/25/%E4%B8%80%E6%96%87%E6%80%BB%E7%BB%93%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E5%8F%8A%E9%9D%A2%E8%AF%95%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/%E4%B8%83%E6%80%81%E6%A8%A1%E5%9E%8B.png">
@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/04/25/%E4%B8%80%E6%96%87%E6%80%BB%E7%BB%93%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E5%8F%8A%E9%9D%A2%E8%AF%95%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/IPC.gif">
 <meta property="og:image" content="http://yoursite.com/2020/04/25/%E4%B8%80%E6%96%87%E6%80%BB%E7%BB%93%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E5%8F%8A%E9%9D%A2%E8%AF%95%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/%E7%BA%BF%E7%A8%8B.png">
 <meta property="article:published_time" content="2020-04-24T17:41:04.000Z">
-<meta property="article:modified_time" content="2020-04-24T17:54:36.688Z">
+<meta property="article:modified_time" content="2020-04-24T17:59:33.039Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/2020/04/25/%E4%B8%80%E6%96%87%E6%80%BB%E7%BB%93%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E5%8F%8A%E9%9D%A2%E8%AF%95%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/%E8%BF%9B%E7%A8%8B.png">
@@ -316,6 +316,7 @@
 
       
         <p>众所周知，操作系统知识非常重要，因为很多经典算法或思路，都能在操作系统中找到身影，故稍好点的公司，都很看中求职者的操作系统的基础，在多次面试中都遇到相关面试题，故用一篇文总结操作系统知识及面试高频考点。</p>
+<a id="more"></a>
 <h1>进程</h1>
 <p>提到进程，估计很多人会想到：<strong>进程是程序的运行实体，是资源（CPU时间片、内存等）分配的最小单元</strong>。这话没错，但还是很抽象。所以我从另外角度解释进程，再次之前有必要说明<strong>抽象</strong>、<strong>虚拟化</strong>、<strong>隔离</strong>三个概念。</p>
 <ul>

@@ -309,109 +309,14 @@
 
       
         
-          
-            <p>众所周知，操作系统知识非常重要，因为很多经典算法或思路，都能在操作系统中找到身影，故稍好点的公司，都很看中求职者的操作系统的基础，在多次面试中都遇到相关面试题，故用一篇文总结操作系统知识及面试高频考点。</p>
-<h1>进程</h1>
-<p>提到进程，估计很多人会想到：<strong>进程是程序的运行实体，是资源（CPU时间片、内存等）分配的最小单元</strong>。这话没错，但还是很抽象。所以我从另外角度解释进程，再次之前有必要说明<strong>抽象</strong>、<strong>虚拟化</strong>、<strong>隔离</strong>三个概念。</p>
-<ul>
-<li>抽象：用<strong>本质</strong>代替复杂事物而忽略细节，是计算机中最重要的概念之一，如用函数接口代替复杂的实现过程就是种抽象，只需按接口规范传参调用，而不用关注底层实现细节。另外与之相关的<strong>中间层</strong>定律：计算机科学领域的任何问题都可以通过增加一个间接的中间层来解决。由抽象提炼中出间层，而中间层之间通过接口通信。</li>
-<li>虚拟化：一种非常重要的<strong>抽象</strong>,是&quot;<strong>逻辑</strong>&quot;概念，而非真实事物。如文件对IO设备的抽象、虚拟内存对存储器的抽象、进程对运行程序的抽象、网络链路对物理通信链路的抽象都是虚拟化的抽象。</li>
-<li>隔离：设计大型系统需保证各组件<strong>相互隔离</strong>，避免某个组件改变影响其他。在操作系统中需保证各进程相互隔离。提供隔离的软件对象就是<strong>进程</strong>。</li>
-</ul>
-<p>一旦保存在磁盘上的程序运行成为<strong>进程</strong>，系统就以进程为单位分配资源（CPU时间片、内存等），每个进程会被分配一块独立的内存体，如图:<br>
-<img src="/2020/04/25/%E4%B8%80%E6%96%87%E6%80%BB%E7%BB%93%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E5%8F%8A%E9%9D%A2%E8%AF%95%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/%E8%BF%9B%E7%A8%8B.png" alt="进程"><br>
-所以说“<strong>进程是程序的运行实体，是资源分配的最小单元</strong>”。</p>
-<h2 id="三种进程">三种进程</h2>
-<ul>
-<li>孤儿进程：父进程退出，但仍运行的子进程被称为<strong>孤儿进程</strong>。其会被init进程回收，故不会对系统造成危害。</li>
-<li>僵尸进程：子进程退出但父进程未调用wait()或waitpid()，仍占用进程描述符的子进程叫<strong>僵尸进程</strong>，ps命令显示出来的状态为z(zombie)，只需杀死父进程使其变孤儿进程并被init回收。</li>
-<li>守护进程：在系统启动后常以root权限运行在后端的特殊进程叫<strong>守护进程</strong>，独立于终端并周期性执行或等待事件，其名称常以d结尾。</li>
-</ul>
-<h2 id="进程状态">进程状态</h2>
-<p>常见的有三态模型、五态模型，但实际系统的进程状态很复杂，需要在<strong>阻塞</strong>、<strong>就绪</strong>、<strong>运行</strong>三种状态之上加上<strong>创建</strong>、<strong>终止</strong>两种状态表示进程的创建和结束，也就是五态模型，在此之上系统为防止进程太多导致内存不足，还需将进程<strong>挂起</strong>，也即将进程从内存保存到交换区，这样才符合真实系统的进程模型，注意挂起分就绪挂起和阻塞挂起，也就组成七态模型，如图所示：<img src="/2020/04/25/%E4%B8%80%E6%96%87%E6%80%BB%E7%BB%93%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E5%8F%8A%E9%9D%A2%E8%AF%95%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/%E4%B8%83%E6%80%81%E6%A8%A1%E5%9E%8B.png" alt="七态模型"><br>
-具体参考<a href="https://blog.csdn.net/qq_32623363/article/details/87891224" target="_blank" rel="noopener">1</a>或<a href="https://www.cnblogs.com/lrhya/p/10636011.html" target="_blank" rel="noopener">2</a></p>
-<h2 id="进程调度">进程调度</h2>
-<p>系统从就绪队列按某种策略，选择进程使进程从就绪态变为运行态，其中的策略就叫进程调度策略，不废话直接上图：<br>
-<img src="/2020/04/25/%E4%B8%80%E6%96%87%E6%80%BB%E7%BB%93%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E5%8F%8A%E9%9D%A2%E8%AF%95%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/dispatch.jpg" alt="dispatch"><br>
-详细说明参考<a href="https://blog.csdn.net/qq_35642036/article/details/82809812" target="_blank" rel="noopener">1</a></p>
-<h2 id="进程通信">进程通信</h2>
-<p>Linux的IPC继承自Unix的IPC,并从一开始就支持Posix IPC，如图所示：<br>
-<img src="/2020/04/25/%E4%B8%80%E6%96%87%E6%80%BB%E7%BB%93%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E5%8F%8A%E9%9D%A2%E8%AF%95%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/IPC.gif" alt="IPC"><br>
-具体来说，Unix IPC最初包括：管道（匿名、命名）、信号、System V IPC(消息队列、信号灯、共享内存)；Posix IPC仅包括后三者,但叫法都加上Posix，之后都支持目前应用最广泛的Socket。<br>
-管道：前者仅支持<strong>父子</strong>进程，后者也支持<strong>非父子</strong>进程间<strong>单向</strong>通信。<br>
-信号：用于通知接收进程某个事件发生,是较复杂通信方式。<br>
-消息队列：存放内核中并由消息队列标识符标识的消息的链表，既无信号承载信息量少，又无管道仅承载无格式字节流及缓冲区大小受限等缺点。<br>
-信号量：计数器，常作为控制多个进程对资源的访问的锁机制。<br>
-共享内存：被其他进程共享的内存段，常结合其他机制达到同步与互斥。<br>
-socket：常用的进程通信机制，多用于不同机器见进程通信，源自BSD。</p>
-<h2 id="死锁">死锁</h2>
-<p>死锁必要条件：</p>
-<ul>
-<li>互斥条件：一个资源仅被一个进程使用</li>
-<li>不可剥夺：进程在未使用完资源前，只能主动释放资源</li>
-<li>请求和保持：进程已保持至少一个资源不放，且又请求而不得（被其他进程占用）</li>
-<li>循环等待：{p0…pn}p0等p1…pn等p0的资源。<br>
-死锁处理策略：<br>
-鸵鸟、预防、避免（四条件不同时成立）、检测与解除</li>
-</ul>
-<h2 id="进程同步">进程同步</h2>
-<p>书上说法不统一，暂时先放着，有时间好好研究。</p>
-<h1>线程</h1>
-<p>由于进程间切换、通信开销较大，限制并发粒度和效率，无法满足越来越复杂的程序要求，于是提出线程概念，线程是指进程内的一个执行单元，也是进程内的可调度实体。如图是线程模型：<img src="/2020/04/25/%E4%B8%80%E6%96%87%E6%80%BB%E7%BB%93%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E5%8F%8A%E9%9D%A2%E8%AF%95%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/%E7%BA%BF%E7%A8%8B.png" alt="线程"></p>
-<h2 id="进程与线程区别">进程与线程区别</h2>
-<ul>
-<li>调度：线程是CPU调度的基本单位，进程是资源分配的基本单位。</li>
-<li>并发性：多进程可并发执行相互独立，同一进程的多线程也可并发执行但不独立。</li>
-<li>拥有资源：进程是拥有系统资源的独立单位，线程没有，但可访问进程内资源。</li>
-<li>系统开销：进程系统的开销大于线程开销。</li>
-</ul>
-<p>联系：<br>
-（1）一个线程只属于一个进程，而一个进程至少有一个线程。<br>
-（2）资源分配给进程，同一进程内所有线程共享该进程的所有资源。<br>
-（3）CPU分给线程，即真正在CPU上运行的是线程。<br>
-（4）多线程执行时，需协作同步。不同进程的线程间要利用消息通信的办法实现同步。</p>
-<h2 id="线程同步">线程同步</h2>
-<ul>
-<li>锁：互斥锁（拍他性）、条件变量（阻塞至特定条件为真）、读写锁（读共享写互斥）</li>
-<li>信号量（sem）：允许同一时刻多个线程（最大线程数）访问公共资源</li>
-<li>事件（信号）：通知的方式保持多线程同步<br>
-具体参考<a href="https://www.cnblogs.com/jiangyu0331/p/11662872.html" target="_blank" rel="noopener">1</a></li>
-</ul>
-<h1>分段与分页</h1>
-<table>
-<thead>
-<tr>
-<th style="text-align:left"></th>
-<th style="text-align:left">分段</th>
-<th style="text-align:left">分页</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">可见性</td>
-<td style="text-align:left">段是信息的逻辑单位，由用户需要划分,故对用户可见</td>
-<td style="text-align:left">页是信息的物理单位，为管理主存方便划分，对用户透明</td>
-</tr>
-<tr>
-<td style="text-align:left">大 小</td>
-<td style="text-align:left">不固定由功能决定</td>
-<td style="text-align:left">固定由系统决定</td>
-</tr>
-<tr>
-<td style="text-align:left">维 度</td>
-<td style="text-align:left">二维地址空间</td>
-<td style="text-align:left">一维地址空间</td>
-</tr>
-<tr>
-<td style="text-align:left">功 能</td>
-<td style="text-align:left">便于存储保护和信息的共享</td>
-<td style="text-align:left">页的保护和共享受限制</td>
-</tr>
-</tbody>
-</table>
-<p>参考<a href="https://blog.csdn.net/gui951753/article/details/79489748" target="_blank" rel="noopener">1</a></p>
-
-          
+          <p>众所周知，操作系统知识非常重要，因为很多经典算法或思路，都能在操作系统中找到身影，故稍好点的公司，都很看中求职者的操作系统的基础，在多次面试中都遇到相关面试题，故用一篇文总结操作系统知识及面试高频考点。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/25/%E4%B8%80%E6%96%87%E6%80%BB%E7%BB%93%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E5%8F%8A%E9%9D%A2%E8%AF%95%E9%AB%98%E9%A2%91%E8%80%83%E7%82%B9/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
