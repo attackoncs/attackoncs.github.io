@@ -300,63 +300,63 @@
       
         
           
-            <h2 id="由于markdown语法简洁、优雅、跨平台等优点，出于写博客需要-现总结markdown语法，本文现学现用，使用markdown总结markdown语法"><a href="#由于markdown语法简洁、优雅、跨平台等优点，出于写博客需要-现总结markdown语法，本文现学现用，使用markdown总结markdown语法" class="headerlink" title="由于markdown语法简洁、优雅、跨平台等优点，出于写博客需要,现总结markdown语法，本文现学现用，使用markdown总结markdown语法:)"></a>由于markdown语法简洁、优雅、跨平台等优点，出于写博客需要,现总结markdown语法，本文现学现用，使用markdown总结markdown语法:)</h2><ol>
-<li>换行<br>两空格或&lt;br&gt;<ol start="2">
-<li>标题<br>#+空格+文字，最多六级标题  </li>
-</ol>
-</li>
-<li>列表  </li>
-</ol>
+            <h1 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h1><p>由于<a href="https://zh.wikipedia.org/wiki/Markdown" target="_blank" rel="noopener">markdown</a>语法简洁、优雅、跨平台、兼容html等优点，出于写博客需要,现总结markdown语法，推荐使用在线markdown编辑器或vs code配合markdown插件，可实时预览效果。<br>故本文现学现用，使用markdown总结markdown语法:)  </p>
+<h1 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h1><p>包括常用语法和扩展语法。</p>
+<h2 id="换行"><a href="#换行" class="headerlink" title="换行"></a>换行</h2><p>两空格或&lt;br&gt;</p>
+<h2 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h2><h3 id="1-setext形式"><a href="#1-setext形式" class="headerlink" title="1. setext形式"></a>1. setext形式</h3><p>上面是标题，换行加上<code>=</code>或<code>-</code>符号</p>
+<h3 id="2-atx形式"><a href="#2-atx形式" class="headerlink" title="2. atx形式"></a>2. atx形式</h3><h4 id="1-对称-包括文本"><a href="#1-对称-包括文本" class="headerlink" title="1.对称#包括文本"></a>1.对称#包括文本</h4><h4 id="2-仅左边使用"><a href="#2-仅左边使用" class="headerlink" title="2.仅左边使用#"></a>2.仅左边使用#</h4><p>左侧也可用标题数个数的’#’+空格+文字，最多六级标题；</p>
+<h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><h3 id="1-无序列表"><a href="#1-无序列表" class="headerlink" title="1. 无序列表"></a>1. 无序列表</h3><p>符号(<em>、+或-)+空格<br>\</em> 符号*作为标记<br>+ 也可用<code>+</code><br>- 还有<code>-</code>  </p>
 <ul>
-<li>无序列表<br>符号(*、+或-)+空格 </li>
+<li>符号*作为标记  </li>
 </ul>
 <ul>
-<li>有序列表  </li>
+<li>也可用<code>+</code>  </li>
 </ul>
-<ol>
-<li>数字+.+空格</li>
+<ul>
+<li>还有<code>-</code>  </li>
+</ul>
+<h3 id="2-有序列表"><a href="#2-有序列表" class="headerlink" title="2. 有序列表"></a>2. 有序列表</h3><ol>
+<li>数字+.+空格  </li>
+<li>嵌套列表  </li>
 </ol>
 <ul>
-<li>嵌套列表  <ul>
+<li>1  <ul>
 <li>1</li>
-<li>2</li>
+<li>2<h2 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h2>一行或多行使用三个以上<em>、-、_表示分割或&lt;hr&gt;，符号之间仅可有空格<br>*<strong>***</strong></em><br>我是分割线:)<br>*<strong>****</strong>    </li>
 </ul>
-<ol>
-<li>3</li>
-</ol>
 </li>
 </ul>
-<ol start="4">
-<li>分割线  </li>
-</ol>
 <hr>
-<p>一行或多行使用三个以上*、-、_表示分割或&lt;hr&gt;，符号之间仅可有空格  </p>
+<p>我是分割线:)</p>
 <hr>
-5. 引用   
-
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p>段落或句前加&gt;符号，多行引用可每行前加&gt;或仅段首1个&gt;符号，若引用要换行可再行尾加两空格或&gt;+换行<br>&gt;引用  </p>
 <blockquote>
-<p>段落或句前加&gt;符号，多行引用可每行前加&gt;或仅段首1个&gt;符号，若引用要换行可再行尾加两空格或&gt;+换行<br>6. 强调</p>
+<p>引用  </p>
 </blockquote>
-<ul>
-<li>斜体: <em>邪体</em> 或 _斜体_或<em>邪体</em></li>
-<li>加粗:<strong>加粗</strong>或 <strong>加粗</strong> 或<strong>加粗</strong></li>
-</ul>
-<ol start="7">
-<li>超链接</li>
-</ol>
-<ul>
-<li>行内式　<a href="URL">link text</a></li>
-<li>参考式:等价于将行内式分成两部分<br><a href="http://www.baidu.com" target="_blank" rel="noopener">link text</a>  </li>
-</ul>
-<ul>
-<li>自动链接 <a href="http://www.baidu.com" target="_blank" rel="noopener">http://www.baidu.com</a>、<a href="mailto:&#49;&#50;&#51;&#64;&#x71;&#113;&#x2e;&#x63;&#x6f;&#109;">&#49;&#50;&#51;&#64;&#x71;&#113;&#x2e;&#x63;&#x6f;&#109;</a></li>
-</ul>
-<ol start="8">
-<li>图像<br>和超链接一致，但在前加!，另可通过<img />指定图像大小  </li>
-<li>代码块<br>代码块前后至少一个空行，且每行前需要至少一个Tab或四空格。也可以通过 ``，插入行内代码（` 是 Tab 键上边、数字 1 键左侧的那个按键）</li>
-<li>字符转义<br>反斜杠+特殊字符（\<br>`<br>*<br>_<br>{}<br>[]<br>()<br>#<br>+<br>-<br>.<br>!）</li>
-<li>扩展语法<br>1. 删除线:<del>删除</del><br>2. 代码块:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">代码</span><br></pre></td></tr></table></figure>
-```要独占一行<br>3. 代码高亮:在第一组后面加上代码所属语言即可<br>4. 表格:|分割不同单元格而用-分隔表头和其他行。左对齐:–右对齐–:居中对齐:–:  <table>
+<h2 id="强调"><a href="#强调" class="headerlink" title="强调"></a>强调</h2><h3 id="1-斜体"><a href="#1-斜体" class="headerlink" title="1. 斜体"></a>1. 斜体</h3><p>*邪体* 或 _斜体_或&lt;em&gt;邪体&lt;/em&gt;  </p>
+<p><em>邪体</em> 或 _斜体_或<em>邪体</em>  </p>
+<h3 id="2-加粗"><a href="#2-加粗" class="headerlink" title="2. 加粗"></a>2. 加粗</h3><p>*<em>加粗*</em>或 __加粗__ 或&lt;strong&gt;加粗&lt;/strong&gt;  </p>
+<p><strong>加粗</strong>或 <strong>加粗</strong> 或<strong>加粗</strong></p>
+<h2 id="超链接"><a href="#超链接" class="headerlink" title="超链接"></a>超链接</h2><h3 id="1-行内式"><a href="#1-行内式" class="headerlink" title="1. 行内式　"></a>1. 行内式　</h3><p>按照[link text](URL)<br>[百度](<a href="https://www.baidu.com" target="_blank" rel="noopener">https://www.baidu.com</a>)  </p>
+<p><a href="https://www.baidu.com" target="_blank" rel="noopener">百度</a>  </p>
+<h3 id="2-参考式"><a href="#2-参考式" class="headerlink" title="2. 参考式"></a>2. 参考式</h3><p>等价于将行内式分成两部分  </p>
+<h3 id="3-自动链接"><a href="#3-自动链接" class="headerlink" title="3. 自动链接"></a>3. 自动链接</h3><p><a href="http://www.baidu.com" target="_blank" rel="noopener">http://www.baidu.com</a>、<a href="mailto:&#x31;&#x32;&#51;&#64;&#x71;&#113;&#x2e;&#x63;&#x6f;&#x6d;">&#x31;&#x32;&#51;&#64;&#x71;&#113;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
+<h2 id="图像"><a href="#图像" class="headerlink" title="图像"></a>图像</h2><p>和超链接一致，但在前加!，另可通过<img />指定图像大小  </p>
+<h2 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h2><p>代码块前后至少一个空行，且每行前需要至少一个Tab或四空格。也可以通过 ``，插入行内代码（` 是 Tab 键上边、数字 1 键左侧的那个按键）</p>
+<h2 id="字符转义"><a href="#字符转义" class="headerlink" title="字符转义"></a>字符转义</h2><p>反斜杠+特殊字符（<code>\</code>、`、<code>*</code>、<code>_</code>、<code>{}</code>、<code>[]</code>、<code>()</code>、<code>#</code>、<code>+</code>、<code>-</code>、<code>.</code>、<code>!</code>）</p>
+<h1 id="扩展语法"><a href="#扩展语法" class="headerlink" title="扩展语法"></a>扩展语法</h1><h2 id="删除线"><a href="#删除线" class="headerlink" title="删除线"></a>删除线</h2><p>~~删除~~  </p>
+<p><del>删除</del>  </p>
+<h2 id="代码块-1"><a href="#代码块-1" class="headerlink" title="代码块"></a>代码块</h2><p>```<br>代码<br>```</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">代码</span><br></pre></td></tr></table></figure>
+<p>注意```要独占一行  </p>
+<h2 id="代码高亮"><a href="#代码高亮" class="headerlink" title="代码高亮"></a>代码高亮</h2><p>在第一组后面加上代码所属语言即可  </p>
+<p>```js<br>window.addEventListener(‘load’, function() {<br>console.log(‘window loaded’);<br>});<br>```</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'load'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'window loaded'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h2><p><code>|</code>分割不同单元格而用<code>-</code>分隔表头和其他行。左对齐<code>:--</code>右对齐<code>--:</code>居中对齐<code>:--:</code>  </p>
+<p>| left | center | right |<br>| :–   | :–: | –: |<br>| a | b| c|</p>
+<table>
 <thead>
 <tr>
 <th align="left">left</th>
@@ -369,158 +369,12 @@
 <td align="center">b</td>
 <td align="right">c</td>
 </tr>
-<tr>
-<td align="left">5. task list</td>
-<td align="center"></td>
-<td align="right"></td>
-</tr>
 </tbody></table>
-</li>
-</ol>
+<h2 id="task-list"><a href="#task-list" class="headerlink" title="task list"></a>task list</h2><p>- [  ]<br>- [ x ]  </p>
 <ul>
-<li>[  ] Eat</li>
-<li>[ x ] Code<ul>
-<li>[ x ]  </li>
+<li>[  ] </li>
+<li>[ x ] <h1 id="linux下markdown编辑器"><a href="#linux下markdown编辑器" class="headerlink" title="linux下markdown编辑器"></a>linux下markdown编辑器</h1>CuteMarkEd、Haroopad、ReText、Cmd Markdown、StackEdit(web)、Dillinger(web) ,另外强烈推荐Typora </li>
 </ul>
-</li>
-</ul>
-<ol start="12">
-<li>支持linux的markdown编辑器<br>CuteMarkEd、Haroopad、ReText、Cmd Markdown、StackEdit(web)、Dillinger(web)  </li>
-</ol>
-<hr>
-<p>推荐使用在线markdown编辑器或vs code配合markdown插件，可实时预览效果。<br>参考自<a href="http://xianbai.me/learn-md/index.html" target="_blank" rel="noopener">Learning-Markdown (Markdown 入门参考)</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/1970/01/01/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/1970/01/01/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="1970-01-01T08:00:00+08:00">
-                1970-01-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
 
           
         
@@ -602,7 +456,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">1</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
